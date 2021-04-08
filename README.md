@@ -1,24 +1,24 @@
-#SocketPainter
+# SocketPainter
 A Java project allowing users to draw shapes and send messages using [Sockets](https://docs.oracle.com/javase/7/docs/api/java/net/Socket.html), 
 [Threads](https://docs.oracle.com/javase/7/docs/api/java/lang/Thread.html),
 [ObjectInputStream](https://docs.oracle.com/javase/7/docs/api/java/io/ObjectInputStream.html)
 /[ObjectOutputStream](https://docs.oracle.com/javase/7/docs/api/java/io/ObjectOutputStream.html), and 
 [JPanel](https://docs.oracle.com/javase/7/docs/api/javax/swing/JPanel.html)
 
-##How to Use
+## How to Use
 1. Run `socketPainter/Hub.java` to initialize the main communication hub.
 2. Run `socketPainter/Painter.java` and enter a username when prompted to add a Painter (user) to the chatroom.
 3. Begin drawing shapes and/or sending chat messages! If you want to have more than one user connected at a time, simply 
    Run another `Painter` (ensuring that your IDE configurations allow for multiple instances of the same class to run in parallel)
    
-##Overview:
-###`Hub.java`
+## Overview:
+### `Hub.java`
 This is the main ServerSocket, it keeps track of the masterCanvas (an ArrayList of all `PaintingPrimitive`s drawn on the shared canvas). All communication (shapes or text) is sent to/broadcasted by the Hub. 
 Once the Hub is started, it will listen for new `Painter` Socket connections. 
 When a new connection is detected, it will accept the connection, and delegate the `Painter` to a new `PainterThread`, 
 send the masterCanvas to the new `Painter`, broadcast the user's arrival into the chatroom, then continue listening for new connections.
 
-###`PainterThread.java`
+### `PainterThread.java`
 The main line of communication between the `Painter` and the `Hub`. 
 Each `PainterThread` is responsible for exactly one `Painter`. When an update (either a chat message of type `String` or 
 a newly drawn shape of type `PaintingPrimitive`) is received from `Painter` via `ObjectInputStream`, it determines the 
@@ -29,7 +29,7 @@ and `PainterThread.shapeUpdateFromHub`, respectively). When an update is receive
 `Painter` via `ObjectOutputStream`.
 
 
-###`Painter.java`
+### `Painter.java`
 Each `Painter` is a unique user in the studio. When a new `Painter` is initialized, it prompts the user for a username. 
 If a username is entered, the `Painter` will try to connect to the `Hub`. If the connection is successful, 
 it will initialize the canvas, and begin listening for: 
