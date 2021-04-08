@@ -61,9 +61,6 @@ public class PainterThread implements Runnable {
 							while(true) {
 								Object obj = ois.readObject();
 								
-//								System.out.print("canvasListener:\t");
-//								System.out.println(obj.getClass());
-								
 								if(obj.getClass().toString().contains("String")) {
 									String toBroadcast = (String) obj;
 									Hub.broadcastMessage(toBroadcast);
@@ -128,7 +125,7 @@ public class PainterThread implements Runnable {
 	}
 	
 	/**
-	 * shapeUpdateFromHub -- forwards a shape received from the Hub to this.PaintingPanel
+	 * shapeUpdateFromHub -- received a shape from the Hub, and forwards it to to this.PaintingPanel
 	 * @param shape
 	 */
 	public synchronized void shapeUpdateFromHub(PaintingPrimitive shape) {
@@ -146,8 +143,6 @@ public class PainterThread implements Runnable {
 	public synchronized void updateFromPainter(ObjectInputStream ois) {
 		try {
 			Object obj = ois.readObject();
-//			System.out.println("updateFromPainter: " + obj.toString());
-//			System.out.println("updateFromPainter: " + obj.getClass());
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
 		}

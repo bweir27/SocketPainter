@@ -16,7 +16,6 @@ public class PaintingPanel extends JPanel {
 
 	public void addPrimitive(PaintingPrimitive obj) {
 		this.primitives.add(obj);
-//		System.out.println(obj.getClass() + " added");
 	}
 
 	public void paintComponent(Graphics g) {

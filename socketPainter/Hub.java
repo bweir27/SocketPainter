@@ -26,8 +26,6 @@ public class Hub {
 	 * @param shape
 	 */
 	public static void broadcastShape(PaintingPrimitive shape) {
-//		System.out.println("Hub: Broadcasting shape- \"" + shape.toString()+"\"");
-
 		//add shape to masterCanvas
 		masterCanvas.add(shape);
 
@@ -62,7 +60,6 @@ public class Hub {
 					pt.shapeUpdateFromHub(p);
 				}
 				thread.start();
-
 			}
 		}catch(IOException e) {
 			e.printStackTrace();

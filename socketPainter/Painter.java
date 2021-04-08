@@ -214,7 +214,6 @@ public class Painter extends JFrame implements MouseListener, MouseMotionListene
 						
 						if(obj.getClass().toString().contains("String")) {
 							String newChat = (String) obj;
-//							System.out.println(feed.equals(null));
 							feed.append(newChat);
 						}else {
 							PaintingPrimitive newShape = (PaintingPrimitive) obj;
@@ -234,7 +233,7 @@ public class Painter extends JFrame implements MouseListener, MouseMotionListene
 	}
 
 /*=================== Communication with Hub ============================*/
-	public  void pullUpdate(ObjectInputStream ois) {
+	public void pullUpdate(ObjectInputStream ois) {
 		while(true) {
 			try {
 				Object update = ois.readObject();
@@ -266,7 +265,6 @@ public class Painter extends JFrame implements MouseListener, MouseMotionListene
 /*======================= this.Event listeners =====================*/
 	@Override
 	public synchronized void actionPerformed(ActionEvent e) {
-		//		System.out.println("clicked: " + e.getActionCommand());
 		String select = e.getActionCommand();
 
 		switch(select) {
@@ -291,18 +289,14 @@ public class Painter extends JFrame implements MouseListener, MouseMotionListene
 					!this.msgInput.getText().equals("")) {
 				//send input text to feed
 				String message = this.getTitle() + ": " + this.msgInput.getText();
-//				System.out.println("Painter: Message Sent: \"" +message+"\"");
 				try {
 					oos.writeObject(message);
 				} catch (IOException e1) {
 					System.out.println("PAINTER ERROR: failed to send message");
 					e1.printStackTrace();
 				}
-				
 				//reset input
 				setMsgPretext();
-			}else {
-//				System.out.println("here");
 			}
 			break;
 		default:
@@ -310,11 +304,9 @@ public class Painter extends JFrame implements MouseListener, MouseMotionListene
 		}
 	}
 
-
 	@Override
 	public synchronized void mousePressed(MouseEvent e) {
 		//set Point on press
-//		System.out.println("mouse pressed");
 		this.startPoint=e.getPoint();
 		if(this.paintPanel.contains(this.startPoint) && this.msgInput.isFocusOwner()) {
 			this.paintPanel.grabFocus();
@@ -325,32 +317,24 @@ public class Painter extends JFrame implements MouseListener, MouseMotionListene
 	@Override
 	public synchronized void mouseReleased(MouseEvent e) {
 		//save Point on release
-		
-		
-//		System.out.println("mouse released");
 		Point endPoint = e.getPoint();
 
 		//test for shape type -> Draw shape accordingly 
 		switch(shape) {
 		case "circle":
 			this.shapeToDraw = new Circle(this.startPoint, endPoint, color);
-//			System.out.println(this.shapeToDraw.toString());
 			break;
 		case "line":
 			this.shapeToDraw = new Line(this.startPoint, endPoint, color);
-//			System.out.println(this.shapeToDraw.getClass());
 			break;
 		default:
 			System.out.println("Error mouseReleased");
 			System.exit(0);
 		}
 
-		//send shape to Hub
+		//send shape to Hub (via PainterThread)
 		try {
-			
-//			System.out.println("Painter sending: " + this.shapeToDraw.toString());
 			oos.writeObject(shapeToDraw);
-			
 		} catch (IOException e1) {
 			System.out.println("PAINTER ERROR: write shape");
 			e1.printStackTrace();
@@ -360,7 +344,6 @@ public class Painter extends JFrame implements MouseListener, MouseMotionListene
 	
 	@Override
 	public synchronized void mouseClicked(MouseEvent e) {
-//		System.out.println("mouse clicked");
 		if(this.msgInput.contains(e.getPoint())){
 			//delete msgInput pretext on focus
 			clearMsgPretext();
@@ -395,7 +378,6 @@ public class Painter extends JFrame implements MouseListener, MouseMotionListene
 	
 	
 	public static void main(String[] args) {
-
 		//prompt for painter's name
 		String username = JOptionPane.showInputDialog("Enter your name");
 		
