@@ -43,16 +43,12 @@ public class Painter extends JFrame implements MouseListener, MouseMotionListene
 	private JTextArea msgInput;
 	private JTextArea feed;
 	
-//	private String username;
-	
 	//drawing instance variables
 	private Color color = Color.BLUE; //set default color to blue
 	private String shape = "circle"; //set default shape to be a circle
 	private Point startPoint;
-	//	private Point endPoint;
-
 	
-	//Hub communication
+	//Hub/PainterThread communication
 	static ObjectOutputStream oos;
 	static ObjectInputStream ois;
 	
@@ -145,8 +141,7 @@ public class Painter extends JFrame implements MouseListener, MouseMotionListene
 		//add shape selectors to the main panel
 		holder.add(topPanel, BorderLayout.NORTH);
 
-
-		// add paint panel
+		// add paint panel (the canvas where shapes are drawn)
 		paintPanel = new PaintingPanel();
 		paintPanel.addMouseListener(this);
 		holder.add(paintPanel, BorderLayout.CENTER);
@@ -179,8 +174,7 @@ public class Painter extends JFrame implements MouseListener, MouseMotionListene
 		
 		inputField.add(this.msgInput,BorderLayout.CENTER);
 		inputField.add(sendMsg, BorderLayout.EAST);
-		
-//		chat.add(inputField);
+
 		chat.add(inputField, BorderLayout.NORTH);
 		
 		feed = new JTextArea();
@@ -192,7 +186,6 @@ public class Painter extends JFrame implements MouseListener, MouseMotionListene
 		feed.setWrapStyleWord(true);
 		feed.setEditable(false);
 		feed.setForeground(Color.WHITE);
-//		feed.setPreferredSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT/4));
 		
 		chat.setPreferredSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT/4));
 		chat.add(feedContainer, BorderLayout.CENTER);
@@ -207,22 +200,22 @@ public class Painter extends JFrame implements MouseListener, MouseMotionListene
 		setVisible(true);
 
 		
-		//receive updates from the Hub
+		//listen for updates from the Hub
 		Thread pullUpdates = new Thread() {
 			public void run() {
 				while(true) {
 					try {
 						synchronized(ois) {
-						Object obj = ois.readObject();
-						
-						if(obj.getClass().toString().contains("String")) {
-							String newChat = (String) obj;
-							feed.append(newChat);
-						}else {
-							PaintingPrimitive newShape = (PaintingPrimitive) obj;
-							paintPanel.addPrimitive(newShape);
-							paintPanel.repaint();
-						}
+							Object obj = ois.readObject();
+
+							if(obj.getClass().toString().contains("String")) {
+								String newChat = (String) obj;
+								feed.append(newChat);
+							}else {
+								PaintingPrimitive newShape = (PaintingPrimitive) obj;
+								paintPanel.addPrimitive(newShape);
+								paintPanel.repaint();
+							}
 						}
 					} catch (ClassNotFoundException | IOException e) {
 						System.out.println("PAINTER ERROR: readObject");
@@ -232,7 +225,6 @@ public class Painter extends JFrame implements MouseListener, MouseMotionListene
 			}
 		};
 		pullUpdates.start();
-		
 	}
 
 /*=================== Communication with Hub ============================*/
@@ -288,7 +280,7 @@ public class Painter extends JFrame implements MouseListener, MouseMotionListene
 			break;
 		case "sendMsg":
 			//ensure pretext is not being sent, nor a blank message
-			if(!this.msgInput.getForeground().equals(Color.LIGHT_GRAY) && 
+			if(!this.msgInput.getForeground().equals(Color.LIGHT_GRAY) &&
 					!this.msgInput.getText().equals("")) {
 				//send input text to feed
 				String message = this.getTitle() + ": " + this.msgInput.getText();
@@ -303,7 +295,7 @@ public class Painter extends JFrame implements MouseListener, MouseMotionListene
 			}
 			break;
 		default:
-			System.out.println("Error actionPerformed");
+			System.out.println("Error: invalid actionPerformed");
 		}
 	}
 

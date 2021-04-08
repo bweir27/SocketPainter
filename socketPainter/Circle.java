@@ -10,7 +10,6 @@ import java.awt.Point;
 public class Circle extends PaintingPrimitive{
 	
 	private Point center, radiusPoint;
-//	private Color c;
 	
 	public Circle(Point center, Point radiusPoint, Color c) {
 		super(c);
@@ -18,7 +17,6 @@ public class Circle extends PaintingPrimitive{
 		this.radiusPoint = radiusPoint;
 	}
 
-	
 	public void drawGeometry(Graphics g) {
         int radius = (int) Math.abs(center.distance(radiusPoint));
         g.drawOval(center.x - radius, center.y - radius, radius*2, radius*2);   

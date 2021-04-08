@@ -44,4 +44,5 @@ New `Painter`s can see the masterCanvas upon arrival, but cannot see any of the 
 
 
 ## Next Steps
-Currently, when a `Painter` disconnects, the `Hub` crashes. Next, I hope to implement graceful disconnect so that when a `Painter` leaves the studio, the `Hub` acknowledges its disconnect, and the other `Painter`s can continue painting/chatting without any hiccups.
+- Currently, when a `Painter` disconnects, the `Hub` crashes. Next, I hope to implement graceful disconnect so that when a `Painter` leaves the studio, the `Hub` acknowledges its disconnect, and the other `Painter`s can continue painting/chatting without any hiccups.
+- When a user is actively drawing a shape (`mouseDragged`), show a preview of the shape being drawn to only that Painter - don't send shape to `PainterThread` until `mouseReleased`.

@@ -11,7 +11,6 @@ public class Line extends PaintingPrimitive{
 	
 	private Point start;
 	private Point end;
-//	Color c;
 	
 	public Line(Point start, Point end, Color c) {
 		super(c);

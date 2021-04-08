@@ -14,6 +14,10 @@ public class Hub {
 	static HashSet<PainterThread> painters = new HashSet<PainterThread>();
 	static ArrayList<PaintingPrimitive> masterCanvas = new ArrayList<PaintingPrimitive>();
 
+	/**
+	 * broadcastMessage - receives a message from a PainterThread, and broadcasts it to all connected painters
+	 * @param message: String
+	 */
 	public static void broadcastMessage(String message) {
 		/*When a new user joins, they do not see the master chat, the first message
 		 * they will see is the server's announcement of their entering
@@ -25,8 +29,8 @@ public class Hub {
 	}
 
 	/**
-	 * broadcastShape -- sends a shape to all connected PainterThreads
-	 * @param shape
+	 * broadcastShape -- receives a shape from a PainterThread, and broadcasts it to all connected painters
+	 * @param shape: PaintingPrimitive
 	 */
 	public static void broadcastShape(PaintingPrimitive shape) {
 		//add shape to masterCanvas
@@ -44,11 +48,20 @@ public class Hub {
 		}
 	}
 
+	/**
+	 * broadcastDisconnect -- receives a shutdown notice from a PainterThread, and removes it from the list of painters
+	 * TODO: get this working
+	 * @param pt: PainterThread
+	 */
 	public static void broadcastDisconnect(PainterThread pt) {
 		painters.remove(pt);
 	}
 
-	private  void startHub() {
+	/**
+	 * startHub -- listens for new Painter connections, assigns a new PainterThread to be the intermediary,
+	 * 				forks off a new thread, and resumes listening for new connections
+	 */
+	private void startHub() {
 		System.out.println("Hub started, awaiting Painter connections...");
 		ServerSocket ss = null;
 		Socket s = null;
@@ -69,7 +82,6 @@ public class Hub {
 			System.exit(0);
 		}
 	}
-
 
 	public static void main(String[] args) {
 		new Hub().startHub();
