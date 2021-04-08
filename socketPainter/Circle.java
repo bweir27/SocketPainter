@@ -1,3 +1,6 @@
+/**
+ * @author Brian Weir (https://github.com/bweir27)
+ */
 package socketPainter;
 
 import java.awt.Color;
