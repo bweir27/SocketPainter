@@ -1,8 +1,8 @@
 # SocketPainter
 A Java project allowing users to draw shapes and send messages using [Sockets](https://docs.oracle.com/javase/7/docs/api/java/net/Socket.html), 
 [Threads](https://docs.oracle.com/javase/7/docs/api/java/lang/Thread.html),
-[ObjectInputStream](https://docs.oracle.com/javase/7/docs/api/java/io/ObjectInputStream.html)
-/[ObjectOutputStream](https://docs.oracle.com/javase/7/docs/api/java/io/ObjectOutputStream.html), and 
+[ObjectInputStream](https://docs.oracle.com/javase/7/docs/api/java/io/ObjectInputStream.html), 
+[ObjectOutputStream](https://docs.oracle.com/javase/7/docs/api/java/io/ObjectOutputStream.html), and 
 [JPanel](https://docs.oracle.com/javase/7/docs/api/javax/swing/JPanel.html)
 
 ## How to Use
@@ -41,3 +41,7 @@ it will initialize the canvas, and begin listening for:
    Once an update is received, the `Painter` determines the type, then either appends the chat to the `feed` or adds the shape to the `paintPanel` accordingly.
    
 New `Painter`s can see the masterCanvas upon arrival, but cannot see any of the previous chatroom messages.
+
+
+## Next Steps
+Currently, when a `Painter` disconnects, the `Hub` crashes. Next, I hope to implement graceful disconnect so that when a `Painter` leaves the studio, the `Hub` acknowledges its disconnect, and the other `Painter`s can continue painting/chatting without any hiccups.
